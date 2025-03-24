@@ -1,0 +1,34 @@
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+def logistic_map(r, initial_population):
+    population = [initial_population]
+    
+    while True:
+        new_population = r * population[-1] * (1 - population[-1])
+        population.append(new_population)
+        yield population
+
+# Example usage
+r = 3.9  # Growth rate parameter
+initial_population = 0.2  # Initial population
+
+# Creating the figure and axes
+fig, ax = plt.subplots()
+line, = ax.plot([], [], lw=2)
+ax.set_xlabel("Time")
+ax.set_ylabel("Population")
+ax.set_title("Logistic Map")
+
+# Generator function for animation
+def update(frame):
+    ax.set_xlim(0, 80)  # Set the x-axis limit to 0 and 80
+    ax.set_ylim(0, 1)
+    line.set_data(range(len(frame)), frame)
+    return line,
+
+# Creating the animation
+ani = FuncAnimation(fig, update, frames=logistic_map(r, initial_population), interval=50)
+
+# Displaying the plot
+plt.show()

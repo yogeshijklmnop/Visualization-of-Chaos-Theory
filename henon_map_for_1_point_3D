@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+from matplotlib.animation import FuncAnimation
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Hénon Map')
+
+a = 1.4
+b = 0.3
+x0 = 0.1
+y0 = 0.1
+num_iterations = 10
+
+x_values = [x0]
+y_values = [y0]
+z_values = [0]
+
+def update(frame):
+    xn = y_values[-1] + 1 - a * x_values[-1]**2
+    yn = b * x_values[-1]
+    zn = frame
+    x_values.append(xn)
+    y_values.append(yn)
+    z_values.append(zn)
+    ax.scatter(xn, yn, zn, c='blue')
+
+animation = FuncAnimation(fig, update, frames=np.arange(0, num_iterations), interval=1000)
+plt.show()

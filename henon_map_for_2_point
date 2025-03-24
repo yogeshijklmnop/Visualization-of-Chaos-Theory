@@ -1,0 +1,40 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.animation import FuncAnimation
+
+fig, ax = plt.subplots()
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_title('Hénon Map - Paths of Two Points')
+
+a = 1.4
+b = 0.3
+x0 = 0.1
+y0 = 0.1
+num_iterations = 1000
+
+x1_values = [x0]
+y1_values = [y0]
+x2_values = [x0 + 0.01]  # Slightly offset initial point
+y2_values = [y0 + 0.01]  # Slightly offset initial point
+
+line1, = ax.plot(x1_values, y1_values, color='black', label='Point 1', lw=1)
+line2, = ax.plot(x2_values, y2_values, color='orange', label='Point 2', lw=1)
+ax.legend()
+ax.set_xlim(-1.35, 1.4)
+ax.set_ylim(-0.45, 0.43)
+
+def update(frame):
+    xn1 = y1_values[-1] + 1 - a * x1_values[-1]**2
+    yn1 = b * x1_values[-1]
+    xn2 = y2_values[-1] + 1 - a * x2_values[-1]**2
+    yn2 = b * x2_values[-1]
+    x1_values.append(xn1)
+    y1_values.append(yn1)
+    x2_values.append(xn2)
+    y2_values.append(yn2)
+    line1.set_data(x1_values, y1_values)
+    line2.set_data(x2_values, y2_values)
+
+animation = FuncAnimation(fig, update, frames=np.arange(0, num_iterations), interval=10)
+plt.show()
